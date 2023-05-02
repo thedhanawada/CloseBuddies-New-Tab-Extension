@@ -5,7 +5,9 @@ CloseBuddies is a personal Chrome extension that displays a random image of me a
 ## Features
 
 - Displays a random image of me and my friends on every new tab
-- Images are of us doing fun activities together
+- Overlay with adjustable opacity to make text more readable
+- Option to toggle between custom and default background images
+- Displays current time, date, and device/battery/connection details
 - Serves as a reminder of our friendship
 
 ## How to Use
