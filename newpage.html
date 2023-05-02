@@ -11,6 +11,10 @@ body, html {
     height: 100%;
     margin: 0;
 }
+/* Add z-index for the text elements */
+.middle, .middle.bottom {
+  z-index: 2;
+}
 
 #bgimg {
     height: 100%;
@@ -78,8 +82,26 @@ body, html {
     background: #ddd;
     color: black;
 }
+.topleft {
+  z-index: 3; /* Add z-index to make the button clickable */
+}
 
 
+/* Add some basic styling for the toggle button */
+#toggleButton {
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 16px;
+  padding: 8px 16px;
+}
+
+#toggleButton:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
 
 
   </style>
@@ -87,8 +109,12 @@ body, html {
 </head>
 <body>
     <script defer src="index.js"></script>
+    <!-- Add the toggle button in the top left corner -->
 <div id="bgimg">
     <video  muted loop id="myVideo"></video>
+    <div class="topleft">
+        <button id="toggleButton">Toggle Background</button>
+      </div>      
  <div class="middle">
     <span style="font-size: 20vh;font-weight: 100;text-shadow: 0 0 2px gray;" id="time"></span><br>
     <span style=" font-size: 5vh;font-weight: 200;text-shadow: 0 0 2px gray;" id="date"></span><br><br>

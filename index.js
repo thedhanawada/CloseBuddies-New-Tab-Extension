@@ -1,5 +1,83 @@
 "use strict";
 const store = chrome.storage.sync;
+let dom = document.getElementById("bgimg");
+function toggleBackground() {
+  store.get(["useDefaultBackground"], (result) => {
+    const useDefault = result.useDefaultBackground || false;
+    store.set({ useDefaultBackground: !useDefault }, () => {
+      setBackgroundImage();
+    });
+  });
+}
+function setBackgroundImage() {
+  store.get(["useDefaultBackground"], (result) => {
+    const useDefault = result.useDefaultBackground || false;
+    if (useDefault) {
+      const imageUrl = chrome.runtime.getURL("default.jpg");
+      setDomBackground(imageUrl);
+    } else {
+      let rand = Math.floor(Math.random() * 3) + 1;
+      let imagePath = `friends${rand}.jpg`;
+      let imageUrl = chrome.runtime.getURL(imagePath);
+      setDomBackground(imageUrl);
+    }
+  });
+}
+function setDomBackground(imageUrl) {
+  let img = new Image();
+  img.onload = function () {
+    dom.style.background = `url(${imageUrl}) center/cover fixed no-repeat`;
+    applyOverlay();
+  };
+  img.src = imageUrl;
+}
+function applyOverlay() {
+  // Remove existing overlays if any
+  const existingOverlayTop = document.getElementById("overlayTop");
+  const existingOverlayBottom = document.getElementById("overlayBottom");
+  if (existingOverlayTop) {
+    existingOverlayTop.remove();
+  }
+  if (existingOverlayBottom) {
+    existingOverlayBottom.remove();
+  }
+
+  // Create and apply new overlay for the top section
+  let overlayTop = document.createElement("div");
+  overlayTop.id = "overlayTop";
+  overlayTop.style.position = "absolute";
+  overlayTop.style.top = 0;
+  overlayTop.style.left = 0;
+  overlayTop.style.width = "100%";
+  overlayTop.style.height = "50px";
+  overlayTop.style.backgroundColor = "rgba(0,0,0,0.5)";
+  overlayTop.style.zIndex = 1;
+  dom.appendChild(overlayTop);
+
+  // Create and apply new overlay for the bottom section
+  let overlayBottom = document.createElement("div");
+  overlayBottom.id = "overlayBottom";
+  overlayBottom.style.position = "absolute";
+  overlayBottom.style.top = "50px";
+  overlayBottom.style.left = 0;
+  overlayBottom.style.width = "100%";
+  overlayBottom.style.height = "calc(100% - 50px)";
+  overlayBottom.style.backgroundColor = "rgba(0,0,0,0.5)";
+  overlayBottom.style.zIndex = 1;
+  dom.appendChild(overlayBottom);
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .getElementById("toggleButton")
+    .addEventListener("click", toggleBackground);
+});
+
+
+// Set the initial background image
+setBackgroundImage();
+
 (function () {
   let dom = document.getElementById("bgimg");
   dom.style.background = "linear-gradient(220.55deg, #5D85A6 0%, #0E2C5E 100%)";
@@ -19,6 +97,7 @@ const store = chrome.storage.sync;
     overlay.style.width = "100%";
     overlay.style.height = "100%";
     overlay.style.backgroundColor = "rgba(0,0,0,0.5)"; // change the opacity to adjust the darkness
+    overlay.style.zIndex = 1; // Add z-index for the overlay
     dom.appendChild(overlay);
   };
   img.src = imageUrl;
