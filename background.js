@@ -1,5 +1,3 @@
-chrome.runtime.onInstalled.addListener(function () {
-  chrome.tabs.create({
-    active: true,
-  });
+chrome.runtime.onInstalled.addListener(function() {
+  chrome.storage.sync.set({useDefaultBackground: false});
 });

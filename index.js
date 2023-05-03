@@ -2,6 +2,7 @@
 const store = chrome.storage.sync;
 let dom = document.getElementById("bgimg");
 function toggleBackground() {
+  console.log("Toggle button clicked!");
   store.get(["useDefaultBackground"], (result) => {
     const useDefault = result.useDefaultBackground || false;
     store.set({ useDefaultBackground: !useDefault }, () => {
